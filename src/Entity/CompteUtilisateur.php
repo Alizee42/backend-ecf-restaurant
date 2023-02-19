@@ -19,6 +19,12 @@ class CompteUtilisateur
     #[ORM\Column(length: 255)]
     private ?string $password = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $role = null;
+
+    #[ORM\Column]
+    private ?bool $estActif = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -44,6 +50,30 @@ class CompteUtilisateur
     public function setPassword(string $password): self
     {
         $this->password = $password;
+
+        return $this;
+    }
+
+    public function getRole(): ?string
+    {
+        return $this->role;
+    }
+
+    public function setRole(string $role): self
+    {
+        $this->role = $role;
+
+        return $this;
+    }
+
+    public function isEstActif(): ?bool
+    {
+        return $this->estActif;
+    }
+
+    public function setEstActif(bool $estActif): self
+    {
+        $this->estActif = $estActif;
 
         return $this;
     }
