@@ -38,64 +38,64 @@ class CategorieController extends AbstractController
     }
 
     /**
- * @Route("/categories/{id}", name="get_one_categorie", methods={"GET"})
- */
-public function get($id): JsonResponse
-{
-    $categorie = $this->categorieRepository->findOneBy(['id' => $id]);
+     * @Route("/categories/{id}", name="get_one_categorie", methods={"GET"})
+     */
+    public function get($id): JsonResponse
+    {
+        $categorie = $this->categorieRepository->findOneBy(['id' => $id]);
 
-    $data = [
-        'id' => $categorie->getId(),
-        'nom' => $categorie->getNom(),
-    ];
-
-    return new JsonResponse($data, Response::HTTP_OK);
-}
-
-/**
- * @Route("/categories", name="get_all_categories", methods={"GET"})
- */
-public function getAll(): JsonResponse
-{
-    $categories = $this->categorieRepository->findAll();
-    $data = [];
-
-    foreach ($categories as $categorie) {
-        $data[] = [
+        $data = [
             'id' => $categorie->getId(),
             'nom' => $categorie->getNom(),
         ];
+
+        return new JsonResponse($data, Response::HTTP_OK);
     }
 
-    return new JsonResponse($data, Response::HTTP_OK);
-}
+    /**
+     * @Route("/categories", name="get_all_categories", methods={"GET"})
+     */
+    public function getAll(): JsonResponse
+    {
+        $categories = $this->categorieRepository->findAll();
+        $data = [];
 
-/**
- * @Route("/categories/{id}", name="update_categorie", methods={"PUT"})
- */
-public function update($id, Request $request): JsonResponse
-{
-    $categorie = $this->categorieRepository->findOneBy(['id' => $id]);
-    $data = json_decode($request->getContent(), true);
+        foreach ($categories as $categorie) {
+            $data[] = [
+                'id' => $categorie->getId(),
+                'nom' => $categorie->getNom(),
+            ];
+        }
 
-    empty($data['nom']) ? true : $categorie->setNom($data['nom']);
+        return new JsonResponse($data, Response::HTTP_OK);
+    }
 
-    $updatedCategorie = $this->categorieRepository->update($categorie);
+    /**
+     * @Route("/categories/{id}", name="update_categorie", methods={"PUT"})
+     */
+    public function update($id, Request $request): JsonResponse
+    {
+        $categorie = $this->categorieRepository->findOneBy(['id' => $id]);
+        $data = json_decode($request->getContent(), true);
 
-    return new JsonResponse($updatedCategorie, Response::HTTP_OK);
-}
+        empty($data['nom']) ? true : $categorie->setNom($data['nom']);
 
-/**
- * @Route("/categories/{id}", name="delete_categorie", methods={"DELETE"})
- */
-public function delete($id): JsonResponse
-{
-    $categorie = $this->categorieRepository->findOneBy(['id' => $id]);
+        $updatedCategorie = $this->categorieRepository->update($categorie);
 
-    $this->categorieRepository->remove($categorie);
+        return new JsonResponse($updatedCategorie, Response::HTTP_OK);
+    }
 
-    return new JsonResponse(['status' => 'Categorie deleted'], Response::HTTP_NO_CONTENT);
-}
+    /**
+     * @Route("/categories/{id}", name="delete_categorie", methods={"DELETE"})
+     */
+    public function delete($id): JsonResponse
+    {
+        $categorie = $this->categorieRepository->findOneBy(['id' => $id]);
+
+        $this->categorieRepository->remove($categorie);
+
+        return new JsonResponse(['status' => 'Categorie deleted'], Response::HTTP_NO_CONTENT);
+    }
 
 
 
