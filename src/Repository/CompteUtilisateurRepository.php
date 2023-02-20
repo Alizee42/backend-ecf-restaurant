@@ -21,22 +21,29 @@ class CompteUtilisateurRepository extends ServiceEntityRepository
         parent::__construct($registry, CompteUtilisateur::class);
     }
 
-    public function save(CompteUtilisateur $entity, bool $flush = false): void
+    public function save($email, $password, $role, $estActif): void
     {
-        $this->getEntityManager()->persist($entity);
-
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
+        $compteUtilisateur = new CompteUtilisateur();
+        $compteUtilisateur->setEmail($email);
+        $compteUtilisateur->setPassword($password);
+        $compteUtilisateur->setRole($role);
+        $compteUtilisateur->setEstActif($estActif);
+        $this->getEntityManager()->persist($compteUtilisateur);
+        $this->getEntityManager()->flush();
     }
 
-    public function remove(CompteUtilisateur $entity, bool $flush = false): void
+    public function update(CompteUtilisateur $compteUtilisateur): CompteUtilisateur
+    {
+        $this->getEntityManager()->persist($compteUtilisateur);
+        $this->getEntityManager()->flush();
+
+        return $compteUtilisateur;
+    }
+
+    public function remove(CompteUtilisateur $entity): void
     {
         $this->getEntityManager()->remove($entity);
-
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
+        $this->getEntityManager()->flush();
     }
 
 //    /**

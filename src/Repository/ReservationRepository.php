@@ -21,22 +21,30 @@ class ReservationRepository extends ServiceEntityRepository
         parent::__construct($registry, Reservation::class);
     }
 
-    public function save(Reservation $entity, bool $flush = false): void
+    public function save($numero, $date, $heurePrevu, $nombreConvive, $allergie): void
     {
-        $this->getEntityManager()->persist($entity);
-
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
+        $reservation = new Reservation();
+        $reservation->setNumero($numero);
+        $reservation->setDate($date);
+        $reservation->setHeurePrevu($heurePrevu);
+        $reservation->setNombreConvive($nombreConvive);
+        $reservation->setAllergie($allergie);
+        $this->getEntityManager()->persist($reservation);
+        $this->getEntityManager()->flush();
     }
 
-    public function remove(Reservation $entity, bool $flush = false): void
+    public function update(Reservation $reservation): Reservation
+    {
+        $this->getEntityManager()->persist($reservation);
+        $this->getEntityManager()->flush();
+
+        return $reservation;
+    }
+
+    public function remove(Reservation $entity): void
     {
         $this->getEntityManager()->remove($entity);
-
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
+        $this->getEntityManager()->flush();
     }
 
 //    /**

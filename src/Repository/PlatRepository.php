@@ -21,22 +21,28 @@ class PlatRepository extends ServiceEntityRepository
         parent::__construct($registry, Plat::class);
     }
 
-    public function save(Plat $entity, bool $flush = false): void
+    public function save($nom, $description, $prix): void
     {
-        $this->getEntityManager()->persist($entity);
-
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
+        $plat = new Plat();
+        $plat->setNom($nom);
+        $plat->setDescription($description);
+        $plat->setPrix($prix);
+        $this->getEntityManager()->persist($plat);
+        $this->getEntityManager()->flush();
     }
 
-    public function remove(Plat $entity, bool $flush = false): void
+    public function update(Plat $plat): Plat
+    {
+        $this->getEntityManager()->persist($plat);
+        $this->getEntityManager()->flush();
+
+        return $plat;
+    }
+
+    public function remove(Plat $entity): void
     {
         $this->getEntityManager()->remove($entity);
-
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
+        $this->getEntityManager()->flush();
     }
 
 //    /**

@@ -21,22 +21,26 @@ class PlaceDisponibleRepository extends ServiceEntityRepository
         parent::__construct($registry, PlaceDisponible::class);
     }
 
-    public function save(PlaceDisponible $entity, bool $flush = false): void
+    public function save($nombre): void
     {
-        $this->getEntityManager()->persist($entity);
-
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
+        $placeDisponible = new PlaceDisponible();
+        $placeDisponible->setNombre($nombre);
+        $this->getEntityManager()->persist($placeDisponible);
+        $this->getEntityManager()->flush();
     }
 
-    public function remove(PlaceDisponible $entity, bool $flush = false): void
+    public function update(PlaceDisponible $placeDisponible): PlaceDisponible
+    {
+        $this->getEntityManager()->persist($placeDisponible);
+        $this->getEntityManager()->flush();
+
+        return $placeDisponible;
+    }
+
+    public function remove(PlaceDisponible $entity): void
     {
         $this->getEntityManager()->remove($entity);
-
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
+        $this->getEntityManager()->flush();
     }
 
 //    /**

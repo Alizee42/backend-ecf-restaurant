@@ -21,22 +21,28 @@ class HoraireRepository extends ServiceEntityRepository
         parent::__construct($registry, Horaire::class);
     }
 
-    public function save(Horaire $entity, bool $flush = false): void
+    public function save($ouverture, $fermeture, $jour): void
     {
-        $this->getEntityManager()->persist($entity);
-
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
+        $horaire = new Horaire();
+        $horaire->setOuverture($ouverture);
+        $horaire->setFermeture($fermeture);
+        $horaire->setJour($jour);
+        $this->getEntityManager()->persist($horaire);
+        $this->getEntityManager()->flush();
     }
 
-    public function remove(Horaire $entity, bool $flush = false): void
+    public function update(Horaire $horaire): Horaire
+    {
+        $this->getEntityManager()->persist($horaire);
+        $this->getEntityManager()->flush();
+
+        return $horaire;
+    }
+
+    public function remove(Horaire $entity): void
     {
         $this->getEntityManager()->remove($entity);
-
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
+        $this->getEntityManager()->flush();
     }
 
 //    /**

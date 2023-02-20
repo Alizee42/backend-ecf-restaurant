@@ -30,12 +30,12 @@ class CategorieRepository extends ServiceEntityRepository
     }
 
     public function update(Categorie $categorie): Categorie
-{
-    $this->getEntityManager()->persist($categorie);
-    $this->getEntityManager()->flush();
+    {
+        $this->getEntityManager()->persist($categorie);
+        $this->getEntityManager()->flush();
 
-    return $categorie;
-}
+        return $categorie;
+    }
 
     public function remove(Categorie $entity): void
     {

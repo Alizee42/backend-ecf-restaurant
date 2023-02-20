@@ -21,22 +21,27 @@ class ImageRepository extends ServiceEntityRepository
         parent::__construct($registry, Image::class);
     }
 
-    public function save(Image $entity, bool $flush = false): void
+    public function save($titre, $path): void
     {
-        $this->getEntityManager()->persist($entity);
-
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
+        $image = new Image();
+        $image->setTitre($titre);
+        $image->setPath($path);
+        $this->getEntityManager()->persist($$image);
+        $this->getEntityManager()->flush();
     }
 
-    public function remove(Image $entity, bool $flush = false): void
+    public function update(Image $image): Image
+    {
+        $this->getEntityManager()->persist($image);
+        $this->getEntityManager()->flush();
+
+        return $image;
+    }
+
+    public function remove(Image $entity): void
     {
         $this->getEntityManager()->remove($entity);
-
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
+        $this->getEntityManager()->flush();
     }
 
 //    /**

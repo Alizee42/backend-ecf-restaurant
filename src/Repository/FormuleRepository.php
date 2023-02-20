@@ -21,22 +21,27 @@ class FormuleRepository extends ServiceEntityRepository
         parent::__construct($registry, Formule::class);
     }
 
-    public function save(Formule $entity, bool $flush = false): void
+    public function save($prix, $description): void
     {
-        $this->getEntityManager()->persist($entity);
-
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
+        $formule = new Formule();
+        $formule->setPrix($prix);
+        $formule->setDescription($description);
+        $this->getEntityManager()->persist($formule);
+        $this->getEntityManager()->flush();
     }
 
-    public function remove(Formule $entity, bool $flush = false): void
+    public function update(Formule $formule): Formule
+    {
+        $this->getEntityManager()->persist($formule);
+        $this->getEntityManager()->flush();
+
+        return $formule;
+    }
+
+    public function remove(Formule $entity): void
     {
         $this->getEntityManager()->remove($entity);
-
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
+        $this->getEntityManager()->flush();
     }
 
 //    /**
