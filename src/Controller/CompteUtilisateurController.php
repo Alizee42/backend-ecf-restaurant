@@ -119,8 +119,6 @@ class CompteUtilisateurController extends AbstractController
         $email = $data['email'];
         $password = $data['password'];
 
-        
-
         $utilisateur = $this->compteUtilisateurRepository->findOneBy(
             [
                 'email' => $email,
