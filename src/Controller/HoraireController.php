@@ -2,17 +2,108 @@
 
 namespace App\Controller;
 
+use App\Repository\HoraireRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 class HoraireController extends AbstractController
 {
-    #[Route('/horaire', name: 'app_horaire')]
-    public function index(): Response
+    private $horaireRepository;
+
+    public function __construct(HoraireRepository $horaireRepository)
     {
-        return $this->render('horaire/index.html.twig', [
-            'controller_name' => 'HoraireController',
-        ]);
+        $this->horaireRepository = $horaireRepository;
+    }
+
+    /**
+     * @Route("/horaires", name="add_horaire", methods={"POST"})
+     */
+    public function add(Request $request): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+
+        $ouverture = $data['ouverture'];
+        $fermeture = $data['fermeture'];
+        $jour = $data['jour'];
+        
+        if (empty($ouverture)) {
+            throw new NotFoundHttpException('Bad request');
+        }
+
+        $this->horaireRepository->save($ouverture, $fermeture, $jour);
+
+        return new JsonResponse(['status' => 'Horaire created!'], Response::HTTP_CREATED);
+    }
+
+    /**
+     * @Route("/Horaires/{id}", name="get_one_horaire", methods={"GET"})
+     */
+    public function get($id): JsonResponse
+    {
+        $horaire = $this->horaireRepository->findOneBy(['id' => $id]);
+
+        $data = [
+            'id' => $horaire->getId(),
+            'ouverture' => $horaire->getOuverture(),
+            'fermeture'=>$horaire->getFermeture(),
+            'jour'=>$horaire->getJour(),
+            
+        ];
+
+        return new JsonResponse($data, Response::HTTP_OK);
+    }
+
+    /**
+     * @Route("/horaires", name="get_all_horaire", methods={"GET"})
+     */
+    public function getAll(): JsonResponse
+    {
+        $horaires = $this->horaireRepository->findAll();
+        $data = [];
+
+        foreach ($horaires as $horaire) {
+            $data[] = [
+                'id' => $horaire->getId(),
+                'ouverture' => $horaire->getOuverture(),
+                'fermeture'=>$horaire->getFermeture(),
+                'jour'=>$horaire->getJour(),
+            ];
+        }
+
+        return new JsonResponse($data, Response::HTTP_OK);
+    }
+
+    /**
+     * @Route("/horaires/{id}", name="update_horaire", methods={"PUT"})
+     */
+    public function update($id, Request $request): JsonResponse
+    {
+        $horaire = $this->horaireRepository->findOneBy(['id' => $id]);
+        $data = json_decode($request->getContent(), true);
+
+        empty($data['ouverture']) ? true : $horaire->setOuverture($data['ouverture']);
+        empty($data['fermeture']) ? true : $horaire->setFermeture($data['fermeture']);
+        empty($data['jour']) ? true : $horaire->setJour($data['jour']);
+        
+
+        $updatedHoraire = $this->horaireRepository->update($horaire);
+
+        return new JsonResponse($updatedHoraire, Response::HTTP_OK);
+    }
+
+    /**
+     * @Route("/horaires/{id}", name="delete_horaire", methods={"DELETE"})
+     */
+    public function delete($id): JsonResponse
+    {
+        $horaire = $this->horaireRepository->findOneBy(['id' => $id]);
+
+        $this->horaireRepository->remove($horaire);
+
+        return new JsonResponse(['status' => 'Horaire deleted'], Response::HTTP_NO_CONTENT);
     }
 }

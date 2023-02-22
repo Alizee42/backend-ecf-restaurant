@@ -21,22 +21,26 @@ class MenuRepository extends ServiceEntityRepository
         parent::__construct($registry, Menu::class);
     }
 
-    public function save(Menu $entity, bool $flush = false): void
+    public function save($titre): void
     {
-        $this->getEntityManager()->persist($entity);
-
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
+        $menu = new Menu();
+        $menu->setTitre($titre);
+        $this->getEntityManager()->persist($menu);
+        $this->getEntityManager()->flush();
     }
 
-    public function remove(Menu $entity, bool $flush = false): void
+    public function update(Menu $menu):Menu
+    {
+        $this->getEntityManager()->persist($menu);
+        $this->getEntityManager()->flush();
+
+        return $menu;
+    }
+
+    public function remove(Menu $entity): void
     {
         $this->getEntityManager()->remove($entity);
-
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
+        $this->getEntityManager()->flush();
     }
 
 //    /**

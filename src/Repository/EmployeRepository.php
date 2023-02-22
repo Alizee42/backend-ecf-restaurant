@@ -21,22 +21,30 @@ class EmployeRepository extends ServiceEntityRepository
         parent::__construct($registry, Employe::class);
     }
 
-    public function save(Employe $entity, bool $flush = false): void
+    public function save($nom, $prenoms, $adresse, $email, $telephone): void
     {
-        $this->getEntityManager()->persist($entity);
-
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
+        $employe = new Employe();
+        $employe->setNom($nom);
+        $employe->setPrenoms($prenoms);
+        $employe->setAdresse($adresse);
+        $employe->setEmail($email);
+        $employe->setTelephone($telephone);
+        $this->getEntityManager()->persist($employe);  
+        $this->getEntityManager()->flush();
     }
 
-    public function remove(Employe $entity, bool $flush = false): void
+    public function update(Employe $employe): Employe
+    {
+        $this->getEntityManager()->persist($employe);
+        $this->getEntityManager()->flush();
+
+        return $employe;
+    }
+
+    public function remove(Employe $entity): void
     {
         $this->getEntityManager()->remove($entity);
-
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
+        $this->getEntityManager()->flush();
     }
 
 //    /**

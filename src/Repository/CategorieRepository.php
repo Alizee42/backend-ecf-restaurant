@@ -21,22 +21,26 @@ class CategorieRepository extends ServiceEntityRepository
         parent::__construct($registry, Categorie::class);
     }
 
-    public function save(Categorie $entity, bool $flush = false): void
+    public function save($nom): void
     {
-        $this->getEntityManager()->persist($entity);
-
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
+        $categorie = new Categorie();
+        $categorie->setNom($nom);
+        $this->getEntityManager()->persist($categorie);
+        $this->getEntityManager()->flush();
     }
 
-    public function remove(Categorie $entity, bool $flush = false): void
+    public function update(Categorie $categorie): Categorie
+    {
+        $this->getEntityManager()->persist($categorie);
+        $this->getEntityManager()->flush();
+
+        return $categorie;
+    }
+
+    public function remove(Categorie $entity): void
     {
         $this->getEntityManager()->remove($entity);
-
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
+        $this->getEntityManager()->flush();
     }
 
 //    /**
