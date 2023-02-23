@@ -109,28 +109,4 @@ class CompteUtilisateurController extends AbstractController
         return new JsonResponse(['status' => 'Compte utilisateur deleted'], Response::HTTP_NO_CONTENT);
     }
 
-    /**
-     * @Route("/login", name="login", methods={"POST"})
-     */
-    public function login(Request $request): JsonResponse
-    {
-        $data = json_decode($request->getContent(), true);
-
-        $email = $data['email'];
-        $password = $data['password'];
-
-        $utilisateur = $this->compteUtilisateurRepository->findOneBy(
-            [
-                'email' => $email,
-                'password' => $password
-            ]
-        );
-
-        if($utilisateur == null) {
-            return new JsonResponse(['status' => 'Email ou mot de passe invalide'], Response::HTTP_UNAUTHORIZED);
-        }
-
-        return new JsonResponse(['status' => 'Compte utilisateur trouvé'], Response::HTTP_OK);
-    }
-
 }
