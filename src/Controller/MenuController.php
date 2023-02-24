@@ -43,6 +43,10 @@ class MenuController extends AbstractController
     {
         $menu = $this->menuRepository->findOneBy(['id' => $id]);
 
+        if($menu == null) {
+            return new JsonResponse(['status' => 'Menu not found!'], Response::HTTP_NOT_FOUND);
+        }
+
         $data = [
             'id' => $menu->getId(),
             'titre' => $menu->getTitre(),
@@ -77,8 +81,12 @@ class MenuController extends AbstractController
     public function update($id, Request $request): JsonResponse
     {
         $menu = $this->menuRepository->findOneBy(['id' => $id]);
-        $data = json_decode($request->getContent(), true);
 
+        if($menu == null) {
+            return new JsonResponse(['status' => 'Menu not found!'], Response::HTTP_NOT_FOUND);
+        }
+
+        $data = json_decode($request->getContent(), true);
         empty($data['titre']) ? true : $menu->setTitre($data['titre']);
         
 
@@ -93,6 +101,10 @@ class MenuController extends AbstractController
     public function delete($id): JsonResponse
     {
         $menu = $this->menuRepository->findOneBy(['id' => $id]);
+
+        if($menu == null) {
+            return new JsonResponse(['status' => 'Menu not found!'], Response::HTTP_NOT_FOUND);
+        }
 
         $this->menuRepository->remove($menu);
 

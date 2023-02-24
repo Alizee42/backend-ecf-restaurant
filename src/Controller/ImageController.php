@@ -46,6 +46,10 @@ class ImageController extends AbstractController
     {
         $image = $this->imageRepository->findOneBy(['id' => $id]);
 
+        if($image == null) {
+            return new JsonResponse(['status' => 'Image not found!'], Response::HTTP_NOT_FOUND);
+        }
+
         $data = [
             'id' => $image->getId(),
             'titre' => $image->getTitre(),
@@ -82,8 +86,12 @@ class ImageController extends AbstractController
     public function update($id, Request $request): JsonResponse
     {
         $image = $this->imageRepository->findOneBy(['id' => $id]);
-        $data = json_decode($request->getContent(), true);
+        
+        if($image == null) {
+            return new JsonResponse(['status' => 'Image not found!'], Response::HTTP_NOT_FOUND);
+        }
 
+        $data = json_decode($request->getContent(), true);
         empty($data['titre']) ? true : $image->setTitre($data['titre']);
         empty($data['path']) ? true : $image->setPath($data['path']);
         
@@ -99,6 +107,10 @@ class ImageController extends AbstractController
     public function delete($id): JsonResponse
     {
         $image = $this->imageRepository->findOneBy(['id' => $id]);
+
+        if($image == null) {
+            return new JsonResponse(['status' => 'Image not found!'], Response::HTTP_NOT_FOUND);
+        }
 
         $this->imageRepository->remove($image);
 

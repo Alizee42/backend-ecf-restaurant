@@ -47,6 +47,10 @@ class PlatController extends AbstractController
     {
         $plat = $this->platRepository->findOneBy(['id' => $id]);
 
+        if($plat == null) {
+            return new JsonResponse(['status' => 'Plat not found!'], Response::HTTP_NOT_FOUND);
+        }
+
         $data = [
             'id' => $plat->getId(),
             'nom' => $plat->getNom(),
@@ -85,8 +89,12 @@ class PlatController extends AbstractController
     public function update($id, Request $request): JsonResponse
     {
         $plat = $this->platRepository->findOneBy(['id' => $id]);
-        $data = json_decode($request->getContent(), true);
 
+        if($plat == null) {
+            return new JsonResponse(['status' => 'Plat not found!'], Response::HTTP_NOT_FOUND);
+        }
+
+        $data = json_decode($request->getContent(), true);
         empty($data['nom']) ? true : $plat->setNom($data['nom']);
         empty($data['description']) ? true : $plat->setDescription($data['description']);
         empty($data['prix']) ? true : $plat->setPrix($data['prix']);
@@ -103,6 +111,10 @@ class PlatController extends AbstractController
     public function delete($id): JsonResponse
     {
         $plat = $this->platRepository->findOneBy(['id' => $id]);
+
+        if($plat == null) {
+            return new JsonResponse(['status' => 'Plat not found!'], Response::HTTP_NOT_FOUND);
+        }
 
         $this->platRepository->remove($plat);
 

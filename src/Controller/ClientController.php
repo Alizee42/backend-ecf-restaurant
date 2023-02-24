@@ -48,6 +48,10 @@ class ClientController extends AbstractController
     {
         $client = $this->clientRepository->findOneBy(['id' => $id]);
 
+        if($client == null) {
+            return new JsonResponse(['status' => 'Client not found!'], Response::HTTP_NOT_FOUND);
+        }
+
         $data = [
             'id' => $client->getId(),
             'nom' => $client->getNom(),
@@ -88,8 +92,12 @@ class ClientController extends AbstractController
     public function update($id, Request $request): JsonResponse
     {
         $client = $this->clientRepository->findOneBy(['id' => $id]);
-        $data = json_decode($request->getContent(), true);
 
+        if($client == null) {
+            return new JsonResponse(['status' => 'Client not found!'], Response::HTTP_NOT_FOUND);
+        }
+
+        $data = json_decode($request->getContent(), true);
         empty($data['nom']) ? true : $client->setNom($data['nom']);
         empty($data['prenoms']) ? true : $client->setPrenoms($data['prenoms']);
         empty($data['telephone']) ? true : $client->setTelephone($data['telephone']);
@@ -107,6 +115,10 @@ class ClientController extends AbstractController
     public function delete($id): JsonResponse
     {
         $client = $this->clientRepository->findOneBy(['id' => $id]);
+
+        if($client == null) {
+            return new JsonResponse(['status' => 'Client not found!'], Response::HTTP_NOT_FOUND);
+        }
 
         $this->clientRepository->remove($client);
 

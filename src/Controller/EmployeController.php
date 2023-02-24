@@ -48,6 +48,10 @@ class EmployeController extends AbstractController
     {
         $employe = $this->employeRepository->findOneBy(['id' => $id]);
 
+        if($employe == null) {
+            return new JsonResponse(['status' => 'Employé not found!'], Response::HTTP_NOT_FOUND);
+        }
+
         $data = [
             'id' => $employe->getId(),
             'nom' => $employe->getNom(),
@@ -90,8 +94,12 @@ class EmployeController extends AbstractController
     public function update($id, Request $request): JsonResponse
     {
         $employe = $this->employeRepository->findOneBy(['id' => $id]);
-        $data = json_decode($request->getContent(), true);
 
+        if($employe == null) {
+            return new JsonResponse(['status' => 'Employé not found!'], Response::HTTP_NOT_FOUND);
+        }
+
+        $data = json_decode($request->getContent(), true);
         empty($data['nom']) ? true : $employe->setNom($data['nom']);
         empty($data['prenoms']) ? true : $employe->setPrenoms($data['prenoms']);
         empty($data['adresse']) ? true : $employe->setAdresse($data['adresse']);
@@ -109,6 +117,10 @@ class EmployeController extends AbstractController
     public function delete($id): JsonResponse
     {
         $employe = $this->employeRepository->findOneBy(['id' => $id]);
+
+        if($employe == null) {
+            return new JsonResponse(['status' => 'Employé not found!'], Response::HTTP_NOT_FOUND);
+        }
 
         $this->employeRepository->remove($employe);
 

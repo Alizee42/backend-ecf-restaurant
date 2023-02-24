@@ -44,6 +44,10 @@ class CategorieController extends AbstractController
     {
         $categorie = $this->categorieRepository->findOneBy(['id' => $id]);
 
+        if($categorie == null) {
+            return new JsonResponse(['status' => 'Categorie not found!'], Response::HTTP_NOT_FOUND);
+        }
+
         $data = [
             'id' => $categorie->getId(),
             'nom' => $categorie->getNom(),
@@ -76,8 +80,12 @@ class CategorieController extends AbstractController
     public function update($id, Request $request): JsonResponse
     {
         $categorie = $this->categorieRepository->findOneBy(['id' => $id]);
-        $data = json_decode($request->getContent(), true);
 
+        if($categorie == null) {
+            return new JsonResponse(['status' => 'Categorie not found!'], Response::HTTP_NOT_FOUND);
+        }
+
+        $data = json_decode($request->getContent(), true);
         empty($data['nom']) ? true : $categorie->setNom($data['nom']);
 
         $updatedCategorie = $this->categorieRepository->update($categorie);
@@ -91,6 +99,10 @@ class CategorieController extends AbstractController
     public function delete($id): JsonResponse
     {
         $categorie = $this->categorieRepository->findOneBy(['id' => $id]);
+
+        if($categorie == null) {
+            return new JsonResponse(['status' => 'Categorie not found!'], Response::HTTP_NOT_FOUND);
+        }
 
         $this->categorieRepository->remove($categorie);
 

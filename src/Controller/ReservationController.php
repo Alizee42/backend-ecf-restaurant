@@ -49,6 +49,10 @@ class ReservationController extends AbstractController
     {
         $reservation = $this->reservationRepository->findOneBy(['id' => $id]);
 
+        if($reservation == null) {
+            return new JsonResponse(['status' => 'Reservation not found!'], Response::HTTP_NOT_FOUND);
+        }
+
         $data = [
             'id' => $reservation->getId(),
             'numero' => $reservation->getNumero(),
@@ -89,8 +93,12 @@ class ReservationController extends AbstractController
     public function update($id, Request $request): JsonResponse
     {
         $reservation = $this->reservationRepository->findOneBy(['id' => $id]);
-        $data = json_decode($request->getContent(), true);
 
+        if($reservation == null) {
+            return new JsonResponse(['status' => 'Reservation not found!'], Response::HTTP_NOT_FOUND);
+        }
+
+        $data = json_decode($request->getContent(), true);
         empty($data['numero']) ? true : $reservation->setNumero($data['numero']);
         empty($data['date']) ? true : $reservation->setDate($data['date']);
         empty($data['heurePrevu']) ? true : $reservation->setHeurePrevu($data['heurePrevu']);
@@ -108,6 +116,10 @@ class ReservationController extends AbstractController
     public function delete($id): JsonResponse
     {
         $reservation = $this->reservationRepository->findOneBy(['id' => $id]);
+
+        if($reservation == null) {
+            return new JsonResponse(['status' => 'Reservation not found!'], Response::HTTP_NOT_FOUND);
+        }
 
         $this->reservationRepository->remove($reservation);
 
