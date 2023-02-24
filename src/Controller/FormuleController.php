@@ -46,6 +46,10 @@ class FormuleController extends AbstractController
     {
         $formule = $this->formuleRepository->findOneBy(['id' => $id]);
 
+        if($formule == null) {
+            return new JsonResponse(['status' => 'Formule not found!'], Response::HTTP_NOT_FOUND);
+        }
+
         $data = [
             'id' => $formule->getId(),
             'prix' => $formule->getPrix(),
@@ -82,8 +86,12 @@ class FormuleController extends AbstractController
     public function update($id, Request $request): JsonResponse
     {
         $formule = $this->formuleRepository->findOneBy(['id' => $id]);
-        $data = json_decode($request->getContent(), true);
 
+        if($formule == null) {
+            return new JsonResponse(['status' => 'Formule not found!'], Response::HTTP_NOT_FOUND);
+        }
+
+        $data = json_decode($request->getContent(), true);
         empty($data['prix']) ? true : $formule->setPrix ($data['prix']);
         empty($data['description']) ? true : $formule->setDescription($data['description']);
         
@@ -98,6 +106,10 @@ class FormuleController extends AbstractController
     public function delete($id): JsonResponse
     {
         $formule = $this->formuleRepository->findOneBy(['id' => $id]);
+
+        if($formule == null) {
+            return new JsonResponse(['status' => 'Formule not found!'], Response::HTTP_NOT_FOUND);
+        }
 
         $this->formuleRepository->remove($formule);
 

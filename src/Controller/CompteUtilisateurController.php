@@ -47,6 +47,10 @@ class CompteUtilisateurController extends AbstractController
     {
         $utilisateur = $this->compteUtilisateurRepository->findOneBy(['id' => $id]);
 
+        if($utilisateur == null) {
+            return new JsonResponse(['status' => 'Compte utilisateur not found!'], Response::HTTP_NOT_FOUND);
+        }
+
         $data = [
             'id' => $utilisateur->getId(),
             'email' => $utilisateur->getEmail(),
@@ -85,6 +89,11 @@ class CompteUtilisateurController extends AbstractController
     public function update($id, Request $request): JsonResponse
     {
         $utilisateur = $this->compteUtilisateurRepository->findOneBy(['id' => $id]);
+
+        if($utilisateur == null) {
+            return new JsonResponse(['status' => 'Compte utilisateur not found!'], Response::HTTP_NOT_FOUND);
+        }
+
         $data = json_decode($request->getContent(), true);
 
         empty($data['email']) ? true : $utilisateur->setEmail($data['email']);
@@ -103,6 +112,10 @@ class CompteUtilisateurController extends AbstractController
     public function delete($id): JsonResponse
     {
         $utilisateur = $this->compteUtilisateurRepository->findOneBy(['id' => $id]);
+
+        if($utilisateur == null) {
+            return new JsonResponse(['status' => 'Compte utilisateur not found!'], Response::HTTP_NOT_FOUND);
+        }
 
         $this->compteUtilisateurRepository->remove($utilisateur);
 

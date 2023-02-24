@@ -46,6 +46,10 @@ class HoraireController extends AbstractController
     {
         $horaire = $this->horaireRepository->findOneBy(['id' => $id]);
 
+        if($horaire == null) {
+            return new JsonResponse(['status' => 'Horaire not found!'], Response::HTTP_NOT_FOUND);
+        }
+
         $data = [
             'id' => $horaire->getId(),
             'ouverture' => $horaire->getOuverture(),
@@ -83,8 +87,12 @@ class HoraireController extends AbstractController
     public function update($id, Request $request): JsonResponse
     {
         $horaire = $this->horaireRepository->findOneBy(['id' => $id]);
-        $data = json_decode($request->getContent(), true);
 
+        if($horaire == null) {
+            return new JsonResponse(['status' => 'Horaire not found!'], Response::HTTP_NOT_FOUND);
+        }
+
+        $data = json_decode($request->getContent(), true);
         empty($data['ouverture']) ? true : $horaire->setOuverture($data['ouverture']);
         empty($data['fermeture']) ? true : $horaire->setFermeture($data['fermeture']);
         empty($data['jour']) ? true : $horaire->setJour($data['jour']);
@@ -101,6 +109,10 @@ class HoraireController extends AbstractController
     public function delete($id): JsonResponse
     {
         $horaire = $this->horaireRepository->findOneBy(['id' => $id]);
+
+        if($horaire == null) {
+            return new JsonResponse(['status' => 'Horaire not found!'], Response::HTTP_NOT_FOUND);
+        }
 
         $this->horaireRepository->remove($horaire);
 

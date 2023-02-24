@@ -45,6 +45,10 @@ class PlaceDisponibleController extends AbstractController
     {
         $place = $this->placeDisponibleRepository->findOneBy(['id' => $id]);
 
+        if($place == null) {
+            return new JsonResponse(['status' => 'Place not found!'], Response::HTTP_NOT_FOUND);
+        }
+
         $data = [
             'id' => $place->getId(),
             'nombre' => $place->getNombre(),
@@ -78,8 +82,12 @@ class PlaceDisponibleController extends AbstractController
     public function update($id, Request $request): JsonResponse
     {
         $place = $this->placeDisponibleRepository->findOneBy(['id' => $id]);
-        $data = json_decode($request->getContent(), true);
 
+        if($place == null) {
+            return new JsonResponse(['status' => 'Place not found!'], Response::HTTP_NOT_FOUND);
+        }
+
+        $data = json_decode($request->getContent(), true);
         empty($data['nombre']) ? true : $place->setNombre($data['nombre']);
         
 
@@ -94,6 +102,10 @@ class PlaceDisponibleController extends AbstractController
     public function delete($id): JsonResponse
     {
         $place = $this->placeDisponibleRepository->findOneBy(['id' => $id]);
+
+        if($place == null) {
+            return new JsonResponse(['status' => 'Place not found!'], Response::HTTP_NOT_FOUND);
+        }
 
         $this->placeDisponibleRepository->remove($place);
 
