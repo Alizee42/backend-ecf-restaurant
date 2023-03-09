@@ -22,6 +22,9 @@ class Horaire
     #[ORM\Column(length: 255)]
     private ?string $jour = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $moment = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -59,6 +62,18 @@ class Horaire
     public function setJour(string $jour): self
     {
         $this->jour = $jour;
+
+        return $this;
+    }
+
+    public function getMoment(): ?string
+    {
+        return $this->moment;
+    }
+
+    public function setMoment(string $moment): self
+    {
+        $this->moment = $moment;
 
         return $this;
     }

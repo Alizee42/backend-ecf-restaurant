@@ -29,12 +29,13 @@ class HoraireController extends AbstractController
         $ouverture = $data['ouverture'];
         $fermeture = $data['fermeture'];
         $jour = $data['jour'];
+        $moment=$data['moment'];
         
         if (empty($ouverture)) {
             throw new NotFoundHttpException('Bad request');
         }
 
-        $this->horaireRepository->save($ouverture, $fermeture, $jour);
+        $this->horaireRepository->save($ouverture, $fermeture, $jour,$moment);
 
         return new JsonResponse(['status' => 'Horaire created!'], Response::HTTP_CREATED);
     }
@@ -55,6 +56,8 @@ class HoraireController extends AbstractController
             'ouverture' => $horaire->getOuverture(),
             'fermeture'=>$horaire->getFermeture(),
             'jour'=>$horaire->getJour(),
+            'moment'=>$horaire->getMoment(),
+
             
         ];
 
@@ -75,6 +78,7 @@ class HoraireController extends AbstractController
                 'ouverture' => $horaire->getOuverture(),
                 'fermeture'=>$horaire->getFermeture(),
                 'jour'=>$horaire->getJour(),
+                'moment'=>$horaire->getMoment(),
             ];
         }
 
@@ -96,6 +100,7 @@ class HoraireController extends AbstractController
         empty($data['ouverture']) ? true : $horaire->setOuverture($data['ouverture']);
         empty($data['fermeture']) ? true : $horaire->setFermeture($data['fermeture']);
         empty($data['jour']) ? true : $horaire->setJour($data['jour']);
+        empty($data['moment']) ? true : $horaire->setMoment($data['moment']);
         
 
         $updatedHoraire = $this->horaireRepository->update($horaire);
