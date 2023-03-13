@@ -120,4 +120,40 @@ class CarteController extends AbstractController
 
         return new JsonResponse(['status' => 'Carte deleted'], Response::HTTP_NO_CONTENT);
     }
+
+    /**
+     * @Route("/cartes/{id}/publier", name="published_one_carte", methods={"GET"})
+     */
+    public function publish($id): JsonResponse
+    {
+        $carte = $this->carteRepository->findOneBy(['id' => $id]);
+
+        if($carte == null) {
+            return new JsonResponse(['status' => 'Carte not found!'], Response::HTTP_NOT_FOUND);
+        }
+
+        $carte->setEstPublie(true);
+
+        $updatedCarte = $this->carteRepository->update($carte);
+
+        return new JsonResponse($updatedCarte, Response::HTTP_OK);
+    }
+
+    /**
+     * @Route("/cartes/{id}/desactiver", name="desactived_one_carte", methods={"GET"})
+     */
+    public function desactivate($id): JsonResponse
+    {
+        $carte = $this->carteRepository->findOneBy(['id' => $id]);
+
+        if($carte == null) {
+            return new JsonResponse(['status' => 'Carte not found!'], Response::HTTP_NOT_FOUND);
+        }
+
+        $carte->setEstPublie(false);
+
+        $updatedCarte = $this->carteRepository->update($carte);
+
+        return new JsonResponse($updatedCarte, Response::HTTP_OK);
+    }
 }
