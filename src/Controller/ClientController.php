@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Repository\ClientRepository;
+use App\Repository\CompteUtilisateurRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -13,10 +14,12 @@ use Symfony\Component\Routing\Annotation\Route;
 class ClientController extends AbstractController
 {
     private $clientRepository;
+    private $compteUtilisateurRepository;
 
-    public function __construct(ClientRepository $clientRepository)
+    public function __construct(ClientRepository $clientRepository, CompteUtilisateurRepository $compteUtilisateurRepository)
     {
         $this->clientRepository = $clientRepository;
+        $this->compteUtilisateurRepository = $compteUtilisateurRepository;
     }
 
     /**
@@ -31,12 +34,16 @@ class ClientController extends AbstractController
         $telephone = $data['telephone'];
         $nombreDeConvive = $data['nombreDeConvive'];
         $allergies = $data['allergies'];
+        $email = $data['email'];
+        $password = $data['password'];
 
         if (empty($nom)) {
             throw new NotFoundHttpException('Bad request');
         }
 
-        $this->clientRepository->save($nom, $prenoms, $telephone, $nombreDeConvive, $allergies);
+        $this->clientRepository->save($nom, $prenoms, $telephone, $nombreDeConvive, $allergies, $email, $password);
+
+        $this->compteUtilisateurRepository->save($email, $password, "client", true);
 
         return new JsonResponse(['status' => 'Client created!'], Response::HTTP_CREATED);
     }
@@ -59,6 +66,8 @@ class ClientController extends AbstractController
             'telephone'=>$client->getTelephone(),
             'nombreDeConvive'=>$client->getNombreDeConvive(),
             'allergies'=>$client->getAllergies(),
+            'email'=>$client->getEmail(),
+            'password'=>$client->getPassword(),
         ];
 
         return new JsonResponse($data, Response::HTTP_OK);
@@ -80,6 +89,8 @@ class ClientController extends AbstractController
                 'telephone'=>$client->getTelephone(),
                 'nombreDeConvive'=>$client->getNombreDeConvive(),
                 'allergies'=>$client->getAllergies(),
+                'email'=>$client->getEmail(),
+                'password'=>$client->getPassword(),
             ];
         }
 
@@ -103,6 +114,8 @@ class ClientController extends AbstractController
         empty($data['telephone']) ? true : $client->setTelephone($data['telephone']);
         empty($data['nombreDeConvive']) ? true : $client->setNombreDeConvive($data['nombreDeConvive']);
         empty($data['allergies']) ? true : $client->setAllergies($data['allergies']);
+        empty($data['email']) ? true : $client->setEmail($data['email']);
+        empty($data['password']) ? true : $client->setPassword($data['password']);
 
         $updatedClient = $this->clientRepository->update($client);
 

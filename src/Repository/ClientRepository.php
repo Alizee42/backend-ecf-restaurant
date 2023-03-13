@@ -21,7 +21,7 @@ class ClientRepository extends ServiceEntityRepository
         parent::__construct($registry, Client::class);
     }
 
-    public function save($nom, $prenoms, $telephone, $nombreDeConvive, $allergies): void
+    public function save($nom, $prenoms, $telephone, $nombreDeConvive, $allergies, $email, $password): void
     {
         $client = new Client();
         $client->setNom($nom);
@@ -29,6 +29,8 @@ class ClientRepository extends ServiceEntityRepository
         $client->setTelephone($telephone);
         $client->setNombreDeConvive($nombreDeConvive);
         $client->setAllergies($allergies);
+        $client->setEmail($email);
+        $client->setPassword($password);
         $this->getEntityManager()->persist($client);
         $this->getEntityManager()->flush();
     }
