@@ -46,3 +46,8 @@ Saisir la commande
 ``` 
 symfony server:start
 ``` 
+
+``` 
+
+Naviguer sur le lien `http://localhost:8000/api/doc`
+``` 
