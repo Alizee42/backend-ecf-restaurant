@@ -11,7 +11,6 @@ class AppFixtures extends Fixture
 
     public function load(ObjectManager $manager): void
     {
-        /*
         $ROLE_ADMIN = "administrateur";
 
         $user = new CompteUtilisateur();
@@ -21,7 +20,6 @@ class AppFixtures extends Fixture
         $user->setRole($ROLE_ADMIN);
         $manager->persist($user);
         $manager->flush();
-        */
 
     }
 }
