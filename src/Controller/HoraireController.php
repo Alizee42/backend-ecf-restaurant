@@ -35,7 +35,7 @@ class HoraireController extends AbstractController
             throw new NotFoundHttpException('Bad request');
         }
 
-        $this->horaireRepository->save($ouverture, $fermeture, $jour,$moment);
+        $this->horaireRepository->save($ouverture, $fermeture, $jour, $moment);
 
         return new JsonResponse(['status' => 'Horaire created!'], Response::HTTP_CREATED);
     }
