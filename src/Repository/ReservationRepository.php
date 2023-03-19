@@ -21,9 +21,10 @@ class ReservationRepository extends ServiceEntityRepository
         parent::__construct($registry, Reservation::class);
     }
 
-    public function save($numero, $date, $heurePrevu, $nombreConvive, $allergie): void
+    public function save($nom, $numero, $date, $heurePrevu, $nombreConvive, $allergie): void
     {
         $reservation = new Reservation();
+        $reservation->setNom($nom);
         $reservation->setNumero($numero);
         $reservation->setDate($date);
         $reservation->setHeurePrevu($heurePrevu);

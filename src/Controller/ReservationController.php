@@ -26,6 +26,7 @@ class ReservationController extends AbstractController
     {
         $data = json_decode($request->getContent(), true);
 
+        $nom = $data['nom'];
         $numero = $data['numero'];
         $date = $data['date'];
         $heurePrevu = $data['heurePrevu'];
@@ -37,7 +38,7 @@ class ReservationController extends AbstractController
             throw new NotFoundHttpException('Bad request');
         }
 
-        $this->reservationRepository->save($numero, $date, $heurePrevu, $nombreConvive, $allergie);
+        $this->reservationRepository->save($nom, $numero, $date, $heurePrevu, $nombreConvive, $allergie);
 
         return new JsonResponse(['status' => 'Reservation created!'], Response::HTTP_CREATED);
     }
@@ -55,6 +56,7 @@ class ReservationController extends AbstractController
 
         $data = [
             'id' => $reservation->getId(),
+            'nom' => $reservation->getNom(),
             'numero' => $reservation->getNumero(),
             'date'=>$reservation->getDate(),
             'heurePrevu'=>$reservation->getHeurePrevu(),
@@ -76,6 +78,7 @@ class ReservationController extends AbstractController
         foreach ($reservations as $reservation) {
             $data[] = [
                 'id' => $reservation->getId(),
+                'nom'=> $reservation->getNom(),
                 'numero' => $reservation->getNumero(),
                 'date'=>$reservation->getDate(),
                 'heurePrevu'=>$reservation->getHeurePrevu(),
@@ -99,6 +102,7 @@ class ReservationController extends AbstractController
         }
 
         $data = json_decode($request->getContent(), true);
+        empty($data['nom']) ? true : $reservation->setNom($data['nom']);
         empty($data['numero']) ? true : $reservation->setNumero($data['numero']);
         empty($data['date']) ? true : $reservation->setDate($data['date']);
         empty($data['heurePrevu']) ? true : $reservation->setHeurePrevu($data['heurePrevu']);
