@@ -15,7 +15,7 @@ class AppFixtures extends Fixture
 
         $user = new CompteUtilisateur();
         $user->setEmail("quaiantique@admin.com");
-        $user->setPassword("12345");
+        $user->setPassword("123456789@");
         $user->setEstActif(true);
         $user->setRole($ROLE_ADMIN);
         $manager->persist($user);
