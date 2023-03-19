@@ -20,7 +20,8 @@ git clone https://github.com/Alizee42/backend-ecf-restaurant.git
 ###### Etape 2: Installer les dependences
 Ouvrir le terminal dans le projet backend-ecf-restaurant
 Ensuite lancer la commande
-``` composer install
+``` 
+composer install
 ```
 
 ###### Etape 3: Configuration et installation de la base de donnée
