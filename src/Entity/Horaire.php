@@ -14,45 +14,26 @@ class Horaire
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $ouverture = null;
-
-    #[ORM\Column(length: 255)]
-    private ?string $fermeture = null;
-
-    #[ORM\Column(length: 255)]
     private ?string $jour = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $moment = null;
+    private ?string $ouvertureMatin = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $fermetureMatin = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $ouvertureSoir = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $fermetureSoir = null;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getOuverture(): ?string
-    {
-        return $this->ouverture;
-    }
-
-    public function setOuverture(string $ouverture): self
-    {
-        $this->ouverture = $ouverture;
-
-        return $this;
-    }
-
-    public function getFermeture(): ?string
-    {
-        return $this->fermeture;
-    }
-
-    public function setFermeture(string $fermeture): self
-    {
-        $this->fermeture = $fermeture;
-
-        return $this;
-    }
+    
 
     public function getJour(): ?string
     {
@@ -66,14 +47,50 @@ class Horaire
         return $this;
     }
 
-    public function getMoment(): ?string
+    public function getOuvertureMatin(): ?string
     {
-        return $this->moment;
+        return $this->ouvertureMatin;
     }
 
-    public function setMoment(string $moment): self
+    public function setOuvertureMatin(string $ouvertureMatin): self
     {
-        $this->moment = $moment;
+        $this->ouvertureMatin = $ouvertureMatin;
+
+        return $this;
+    }
+
+    public function getFermetureMatin(): ?string
+    {
+        return $this->fermetureMatin;
+    }
+
+    public function setFermetureMatin(string $fermetureMatin): self
+    {
+        $this->fermetureMatin = $fermetureMatin;
+
+        return $this;
+    }
+
+    public function getOuvertureSoir(): ?string
+    {
+        return $this->ouvertureSoir;
+    }
+
+    public function setOuvertureSoir(string $ouvertureSoir): self
+    {
+        $this->ouvertureSoir = $ouvertureSoir;
+
+        return $this;
+    }
+
+    public function getFermetureSoir(): ?string
+    {
+        return $this->fermetureSoir;
+    }
+
+    public function setFermetureSoir(string $fermetureSoir): self
+    {
+        $this->fermetureSoir = $fermetureSoir;
 
         return $this;
     }

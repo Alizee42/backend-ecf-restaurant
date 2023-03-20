@@ -26,16 +26,18 @@ class HoraireController extends AbstractController
     {
         $data = json_decode($request->getContent(), true);
 
-        $ouverture = $data['ouverture'];
-        $fermeture = $data['fermeture'];
+        $ouvertureMatin = $data['ouverture_matin'];
+        $fermetureMatin = $data['fermeture_matin'];
+        $ouvertureSoir = $data['ouverture_soir'];
+        $fermetureSoir = $data['fermeture_soir'];
         $jour = $data['jour'];
-        $moment=$data['moment'];
+       
         
-        if (empty($ouverture)) {
+        if (empty($jour)) {
             throw new NotFoundHttpException('Bad request');
         }
 
-        $this->horaireRepository->save($ouverture, $fermeture, $jour, $moment);
+        $this->horaireRepository->save($ouvertureMatin, $fermetureMatin, $ouvertureSoir, $fermetureSoir, $jour);
 
         return new JsonResponse(['status' => 'Horaire created!'], Response::HTTP_CREATED);
     }
@@ -53,12 +55,11 @@ class HoraireController extends AbstractController
 
         $data = [
             'id' => $horaire->getId(),
-            'ouverture' => $horaire->getOuverture(),
-            'fermeture'=>$horaire->getFermeture(),
             'jour'=>$horaire->getJour(),
-            'moment'=>$horaire->getMoment(),
-
-            
+            'ouverture_matin'=>$horaire->getOuvertureMatin(),
+            'fermeture_matin'=>$horaire->getFermetureMatin(),
+            'ouverture_soir'=>$horaire->getOuvertureSoir(),
+            'fermeture_soir'=>$horaire->getFermetureSoir(),
         ];
 
         return new JsonResponse($data, Response::HTTP_OK);
@@ -75,10 +76,11 @@ class HoraireController extends AbstractController
         foreach ($horaires as $horaire) {
             $data[] = [
                 'id' => $horaire->getId(),
-                'ouverture' => $horaire->getOuverture(),
-                'fermeture'=>$horaire->getFermeture(),
                 'jour'=>$horaire->getJour(),
-                'moment'=>$horaire->getMoment(),
+                'ouverture_matin'=>$horaire->getOuvertureMatin(),
+                'fermeture_matin'=>$horaire->getFermetureMatin(),
+                'ouverture_soir'=>$horaire->getOuvertureSoir(),
+                'fermeture_soir'=>$horaire->getFermetureSoir(),
             ];
         }
 
@@ -97,12 +99,12 @@ class HoraireController extends AbstractController
         }
 
         $data = json_decode($request->getContent(), true);
-        empty($data['ouverture']) ? true : $horaire->setOuverture($data['ouverture']);
-        empty($data['fermeture']) ? true : $horaire->setFermeture($data['fermeture']);
         empty($data['jour']) ? true : $horaire->setJour($data['jour']);
-        empty($data['moment']) ? true : $horaire->setMoment($data['moment']);
+        empty($data['ouverture_matin']) ? true : $horaire->setOuvertureMatin($data['ouverture_matin']);
+        empty($data['fermeture_matin']) ? true : $horaire->setFermetureMatin($data['fermeture_matin']);
+        empty($data['ouverture_soir']) ? true : $horaire->setOuvertureSoir($data['ouverture_soir']);
+        empty($data['fermeture_soir']) ? true : $horaire->setFermetureSoir($data['fermeture_soir']);
         
-
         $updatedHoraire = $this->horaireRepository->update($horaire);
 
         return new JsonResponse($updatedHoraire, Response::HTTP_OK);

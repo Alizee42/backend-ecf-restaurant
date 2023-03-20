@@ -21,13 +21,15 @@ class HoraireRepository extends ServiceEntityRepository
         parent::__construct($registry, Horaire::class);
     }
 
-    public function save($ouverture, $fermeture, $jour, $moment): void
+    public function save($ouvertureMatin, $fermetureMatin, $ouvertureSoir, $fermetureSoir, $jour): void
     {
         $horaire = new Horaire();
-        $horaire->setOuverture($ouverture);
-        $horaire->setFermeture($fermeture);
         $horaire->setJour($jour);
-        $horaire->setMoment($moment);
+        $horaire->setOuvertureMatin($ouvertureMatin);
+        $horaire->setFermetureMatin($fermetureMatin);
+        $horaire->setOuvertureSoir($ouvertureSoir);
+        $horaire->setFermetureSoir($fermetureSoir);
+        
         $this->getEntityManager()->persist($horaire);
         $this->getEntityManager()->flush();
     }
