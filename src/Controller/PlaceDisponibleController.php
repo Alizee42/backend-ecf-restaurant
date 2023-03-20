@@ -27,13 +27,14 @@ class PlaceDisponibleController extends AbstractController
         $data = json_decode($request->getContent(), true);
 
         $nombre = $data['nombre'];
+        $valeurParDefaut = $data['valeur_par_defaut'];
         
 
         if (empty($nombre)) {
             throw new NotFoundHttpException('Bad request');
         }
 
-        $this->placeDisponibleRepository->save($nombre);
+        $this->placeDisponibleRepository->save($nombre, $valeurParDefaut);
 
         return new JsonResponse(['status' => 'Place disponible created!'], Response::HTTP_CREATED);
     }
@@ -52,6 +53,28 @@ class PlaceDisponibleController extends AbstractController
         $data = [
             'id' => $place->getId(),
             'nombre' => $place->getNombre(),
+            'valeur_par_defaut' => $place->getValeurParDefaut(),
+            
+        ];
+
+        return new JsonResponse($data, Response::HTTP_OK);
+    }
+
+    /**
+     * @Route("/places/disponible", name="get_place_disponible", methods={"GET"})
+     */
+    public function getPlaceDisponible(): JsonResponse
+    {
+        $place = $this->placeDisponibleRepository->findOneBy(['valeurParDefaut' => 100]);
+
+        if($place == null) {
+            return new JsonResponse(['status' => 'Place not found!'], Response::HTTP_NOT_FOUND);
+        }
+
+        $data = [
+            'id' => $place->getId(),
+            'nombre' => $place->getNombre(),
+            'valeur_par_defaut' => $place->getValeurParDefaut(),
             
         ];
 
@@ -70,6 +93,7 @@ class PlaceDisponibleController extends AbstractController
             $data[] = [
                 'id' => $place->getId(),
                 'nombre' => $place->getNombre(),
+                'valeur_par_defaut' => $place->getValeurParDefaut(),
             ];
         }
 
@@ -89,8 +113,47 @@ class PlaceDisponibleController extends AbstractController
 
         $data = json_decode($request->getContent(), true);
         empty($data['nombre']) ? true : $place->setNombre($data['nombre']);
+        empty($data['valeur_par_defaut']) ? true : $place->setValeurParDefaut($data['valeur_par_defaut']);
         
 
+        $updatedPlace = $this->placeDisponibleRepository->update($place);
+
+        return new JsonResponse($updatedPlace, Response::HTTP_OK);
+    }
+
+    /**
+     * @Route("/reservation/valider", name="validate_place", methods={"PUT"})
+     */
+    public function validate(): JsonResponse
+    {
+        $place = $this->placeDisponibleRepository->findOneBy(['valeurParDefaut' => 100]);
+
+        if($place == null) {
+            return new JsonResponse(['status' => 'Place not found!'], Response::HTTP_NOT_FOUND);
+        }
+        
+        $nombrePlace = $place->getNombre() - 1;
+        $place->setNombre($nombrePlace);
+        
+        $updatedPlace = $this->placeDisponibleRepository->update($place);
+
+        return new JsonResponse($updatedPlace, Response::HTTP_OK);
+    }
+
+    /**
+     * @Route("/reservation/refuser", name="refused_place", methods={"PUT"})
+     */
+    public function refused(): JsonResponse
+    {
+        $place = $this->placeDisponibleRepository->findOneBy(['valeurParDefaut' => 100]);
+
+        if($place == null) {
+            return new JsonResponse(['status' => 'Place not found!'], Response::HTTP_NOT_FOUND);
+        }
+        
+        $nombrePlace = $place->getNombre() + 1;
+        $place->setNombre($nombrePlace);
+        
         $updatedPlace = $this->placeDisponibleRepository->update($place);
 
         return new JsonResponse($updatedPlace, Response::HTTP_OK);

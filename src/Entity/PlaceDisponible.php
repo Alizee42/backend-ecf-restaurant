@@ -16,6 +16,9 @@ class PlaceDisponible
     #[ORM\Column]
     private ?int $nombre = null;
 
+    #[ORM\Column]
+    private ?int $valeurParDefaut = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -29,6 +32,18 @@ class PlaceDisponible
     public function setNombre(int $nombre): self
     {
         $this->nombre = $nombre;
+
+        return $this;
+    }
+
+    public function getValeurParDefaut(): ?int
+    {
+        return $this->valeurParDefaut;
+    }
+
+    public function setValeurParDefaut(int $valeurParDefaut): self
+    {
+        $this->valeurParDefaut = $valeurParDefaut;
 
         return $this;
     }

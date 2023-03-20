@@ -30,12 +30,13 @@ class CarteController extends AbstractController
         $descrption = $data['description'];
         $prix = $data['prix'];
         $estPublie = $data['est_publie'];
+        $image = $data['image'];
 
         if (empty($titre)) {
             throw new NotFoundHttpException('Bad request');
         }
 
-        $this->carteRepository->save($titre, $descrption, $prix, $estPublie);
+        $this->carteRepository->save($titre, $descrption, $prix, $estPublie, $image);
 
         return new JsonResponse(['status' => 'Carte created!'], Response::HTTP_CREATED);
     }
@@ -57,6 +58,7 @@ class CarteController extends AbstractController
             'description' => $carte->getDescription(),
             'prix' => $carte->getPrix(),
             'est_publie' => $carte->isEstPublie(),
+            'image' => $carte->getImage(),
         ];
 
         return new JsonResponse($data, Response::HTTP_OK);
@@ -77,6 +79,7 @@ class CarteController extends AbstractController
                 'description' => $carte->getDescription(),
                 'prix' => $carte->getPrix(),
                 'est_publie' => $carte->isEstPublie(),
+                'image' => $carte->getImage(),
             ];
         }
 
@@ -99,6 +102,7 @@ class CarteController extends AbstractController
         empty($data['description']) ? true : $carte->setDescription($data['description']);
         empty($data['prix']) ? true : $carte->setPrix($data['prix']);
         empty($data['est_publie']) ? true : $carte->setEstPublie($data['est_publie']);
+        empty($data['image']) ? true : $carte->setImage($data['image']);
 
         $updatedCarte = $this->carteRepository->update($carte);
 

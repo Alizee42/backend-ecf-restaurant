@@ -21,10 +21,11 @@ class PlaceDisponibleRepository extends ServiceEntityRepository
         parent::__construct($registry, PlaceDisponible::class);
     }
 
-    public function save($nombre): void
+    public function save($nombre, $valeurParDefaut): void
     {
         $placeDisponible = new PlaceDisponible();
         $placeDisponible->setNombre($nombre);
+        $placeDisponible->setValeurParDefaut($valeurParDefaut);
         $this->getEntityManager()->persist($placeDisponible);
         $this->getEntityManager()->flush();
     }

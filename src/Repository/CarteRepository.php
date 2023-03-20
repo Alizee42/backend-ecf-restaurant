@@ -21,14 +21,14 @@ class CarteRepository extends ServiceEntityRepository
         parent::__construct($registry, Carte::class);
     }
 
-    public function save($titre, $description, $prix, $estPublie): void
+    public function save($titre, $description, $prix, $estPublie, $image): void
     {
         $carte = new Carte();
         $carte->setTitre($titre);
         $carte->setDescription($description);
         $carte->setPrix($prix);
         $carte->setEstPublie($estPublie);
-        $carte->setImage("assets/images/");
+        $carte->setImage($image);
         $this->getEntityManager()->persist($carte);
         $this->getEntityManager()->flush();
     }
