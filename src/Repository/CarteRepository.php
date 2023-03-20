@@ -28,6 +28,7 @@ class CarteRepository extends ServiceEntityRepository
         $carte->setDescription($description);
         $carte->setPrix($prix);
         $carte->setEstPublie($estPublie);
+        $carte->setImage("assets/images/");
         $this->getEntityManager()->persist($carte);
         $this->getEntityManager()->flush();
     }
