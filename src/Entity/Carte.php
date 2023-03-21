@@ -28,6 +28,9 @@ class Carte
     #[ORM\Column]
     private ?bool $estPublie = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $categorie = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -89,6 +92,18 @@ class Carte
     public function setEstPublie(bool $estPublie): self
     {
         $this->estPublie = $estPublie;
+
+        return $this;
+    }
+
+    public function getCategorie(): ?string
+    {
+        return $this->categorie;
+    }
+
+    public function setCategorie(string $categorie): self
+    {
+        $this->categorie = $categorie;
 
         return $this;
     }
