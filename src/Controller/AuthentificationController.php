@@ -39,6 +39,14 @@ class AuthentificationController extends AbstractController
             return new JsonResponse(['status' => 'Email ou mot de passe invalide'], Response::HTTP_UNAUTHORIZED);
         }
 
-        return new JsonResponse(['status' => 'Compte utilisateur trouvé'], Response::HTTP_OK);
+        $message = "Compte utilisateur trouvé";
+
+        if($utilisateur->getRole() == "administrateur") {
+            $message = "Compte administrateur trouvé";
+        } else if($utilisateur->getRole() == "client") {
+            $message = "Compte client trouvé";
+        }
+
+        return new JsonResponse(['status' => $message], Response::HTTP_OK);
     }
 }
