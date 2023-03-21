@@ -21,10 +21,12 @@ class MenuRepository extends ServiceEntityRepository
         parent::__construct($registry, Menu::class);
     }
 
-    public function save($titre): void
+    public function save($titre, $formule, $prix): void
     {
         $menu = new Menu();
         $menu->setTitre($titre);
+        $menu->setFormule($formule);
+        $menu->setPrix($prix);
         $this->getEntityManager()->persist($menu);
         $this->getEntityManager()->flush();
     }

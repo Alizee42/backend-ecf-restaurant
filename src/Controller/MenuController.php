@@ -26,12 +26,14 @@ class MenuController extends AbstractController
         $data = json_decode($request->getContent(), true);
 
         $titre = $data['titre'];
+        $formule = $data['formule'];
+        $prix = $data['prix'];
         
         if (empty($titre)) {
             throw new NotFoundHttpException('Bad request');
         }
 
-        $this->menuRepository->save($titre);
+        $this->menuRepository->save($titre, $formule, $prix);
 
         return new JsonResponse(['status' => 'Menu created!'], Response::HTTP_CREATED);
     }
@@ -50,6 +52,8 @@ class MenuController extends AbstractController
         $data = [
             'id' => $menu->getId(),
             'titre' => $menu->getTitre(),
+            'formule' => $menu->getFormule(),
+            'prix' => $menu->getPrix(),
             
         ];
 
@@ -68,6 +72,8 @@ class MenuController extends AbstractController
             $data[] = [
                 'id' => $menu->getId(),
                 'titre' => $menu->getTitre(),
+                'formule' => $menu->getFormule(),
+                'prix' => $menu->getPrix(),
                 
             ];
         }
