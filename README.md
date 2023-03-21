@@ -52,3 +52,10 @@ symfony server:start
 
 Naviguer sur le lien `http://localhost:8000/api/doc`
 ``` 
+
+###### Etape 7: Accès de connexion à l'espace administrateur
+Saisir
+``` 
+Email: quaiantique@admin.com
+Mot de passe: 123456789@
+``` 
