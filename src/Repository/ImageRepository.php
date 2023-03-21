@@ -26,7 +26,7 @@ class ImageRepository extends ServiceEntityRepository
         $image = new Image();
         $image->setTitre($titre);
         $image->setPath($path);
-        $this->getEntityManager()->persist($$image);
+        $this->getEntityManager()->persist($image);
         $this->getEntityManager()->flush();
     }
 
