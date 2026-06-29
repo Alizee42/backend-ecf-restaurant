@@ -1,61 +1,61 @@
-###  Backend-ecf-restaurant
+# Quai Antique — Backend (ECF)
 
-- [x] PHP8
-- [x] Symfony 5.4
-- [x] MariaDB-10.5.8
+API REST Symfony pour l'application **Quai Antique**, projet d'examen de certification (Diplôme Niv. 5). Expose un CRUD complet pour la gestion d'un restaurant.
 
-# Heroku API
-https://backend-restaurant-ecf.herokuapp.com/api/doc
+## Stack technique
 
-![Quai Antique API](https://raw.githubusercontent.com/Alizee42/frontend-ecf-restaurant/main/src/assets/images/logo/logo3.jpg)
+| Technologie | Version |
+|---|---|
+| PHP | 8 |
+| Symfony | 5.4.* |
+| Doctrine ORM | ^2.14 |
+| Doctrine Migrations | ^3.2 |
+| Doctrine Fixtures | ^3.4 |
+| MariaDB | 10.5.8 (local) / PostgreSQL 15 (Docker) |
+| NelmioApiDocBundle (Swagger) | ^4.11 |
+| NelmioCorsBundle | ^2.3 |
+| PHPUnit | ^9.5 |
 
-#### Installation En local
+## Installation locale
 
-###### Etape 1: Cloner le projet back-end
-[Download](https://github.com/Alizee42/backend-ecf-restaurant)
-```
+```bash
+# 1. Cloner le projet
 git clone https://github.com/Alizee42/backend-ecf-restaurant.git
-```
+cd backend-ecf-restaurant
 
-###### Etape 2: Installer les dependences
-Ouvrir le terminal dans le projet backend-ecf-restaurant
-Ensuite lancer la commande
-``` 
+# 2. Installer les dépendances
 composer install
+
+# 3. Configurer la base de données dans .env
+DATABASE_URL=mysql://votreUtilisateur:votreMotDePasse@127.0.0.1:3306/db_ecf_restaurant?serverVersion=mariadb-10.5.8
+
+# 4. Créer la base et les tables
+php bin/console doctrine:database:create
+php bin/console doctrine:migrations:migrate
+
+# 5. Charger les fixtures (crée le compte admin)
+php bin/console doctrine:fixtures:load
+
+# 6. Démarrer le serveur
+symfony server:start
 ```
 
-###### Etape 3: Configuration et installation de la base de donnée
-Modifier les accès a la base de données(mettre votre nom utilisateur et votre mot de passe en local) dans le ficher .env
-``` 
-DATABASE_URL=mysql://votreNomUtilisateur:votreMotDepasse@127.0.0.1:3306/db_ecf_restaurant?serverVersion=mariadb-10.5.8
-``` 
+API disponible sur `http://localhost:8000`  
+Documentation Swagger : `http://localhost:8000/api/doc`
 
-###### Etape 4: Créer votre base de données et générer les tables
-Taper la commande dans le terminale
-"php bin/console doctrine:database:create"
-Ensuite la commande suivante
-"php bin/console doctrine:migrations:migrate"
+## Connexion administrateur
 
-###### Etape 5: Générer l'utilisateur Admin
-Saisir la commande dans le terminal
-``` 
-php bin/console doctrine:fixtures:load
-``` 
+```
+Email    : quaiantique@admin.com
+Mot de passe : 123456789@
+```
 
-###### Etape 6: Demarrer le projet
-Saisir la commande
-``` 
-symfony server:start
-``` 
+## Docker (PostgreSQL)
 
-``` 
+```bash
+docker-compose up -d   # Démarre PostgreSQL sur le port 5432
+```
 
-Naviguer sur le lien `http://localhost:8000/api/doc`
-``` 
+## Entités principales
 
-###### Etape 7: Accès de connexion à l'espace administrateur
-Saisir
-``` 
-Email: quaiantique@admin.com
-Mot de passe: 123456789@
-``` 
+`Carte`, `Categorie`, `Client`, `CompteUtilisateur`, `Employe`, `Formule`, `Horaire`, `Image`, `Menu`, `PlaceDisponible`, `Plat`, `Reservation`
